@@ -38,7 +38,7 @@ app.use('/login',loginRouter)
 app.use('/index', indexRouter);
 
 //Suojatut reitit
-//app.use(authenticateToken);
+app.use(authenticateToken);
 app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter);
 
