@@ -37,4 +37,28 @@ router.post('/depositBalance',function(request,response){
     })
   });
 
+  router.post('/showAccount/', function(request,response){
+    transactions.showAccount(request.body, function(err,result){
+      if(err){
+        console.log(err);
+        response.json(err.errno);
+      }
+      else{
+        response.json(result[0])
+      }
+    })
+  })
+
+  router.post('/showTransactions/', function(request,response){
+    transactions.showTransactions(request.body, function(err,result){
+      if(err){
+        console.log(err);
+        response.json(err.errno);
+      }
+      else{
+        response.json(result)
+      }
+    })
+  })
+  
 module.exports=router;
