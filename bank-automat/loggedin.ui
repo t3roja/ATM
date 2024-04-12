@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>loggedIn</class>
+ <widget class="QDialog" name="loggedIn">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>103</width>
+    <height>154</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item alignment="Qt::AlignHCenter">
+    <widget class="QLabel" name="labelHello">
+     <property name="font">
+      <font>
+       <italic>true</italic>
+       <bold>true</bold>
+       <underline>true</underline>
+      </font>
+     </property>
+     <property name="text">
+      <string>Hei!</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnTakeMoney">
+     <property name="text">
+      <string>Nosto</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnBalance">
+     <property name="text">
+      <string>Saldo</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnTransaction">
+     <property name="text">
+      <string>Tilitapahtumat</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnLogOut">
+     <property name="text">
+      <string>Kirjaudu ulos</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

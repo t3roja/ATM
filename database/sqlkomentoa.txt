@@ -1,0 +1,61 @@
+Select * from client
+Select * from account
+Select * from transaction
+Select * from card
+Select * from account_type
+
+select * FROM account WHERE id_client = 2
+
+# asiakkaan lisääminen
+insert into client (fname, lname) VALUES ('Matt', 'Patt')
+
+#tilin lisääminen (Debit/credit)
+insert into account (id_client, account_type, balance, credit_limit) VALUES (3, 'Debit/credit', 3000, 6000)
+
+#kortin liääminen
+INSERT INTO card (id_card, card_type, id_account, pin) VALUES 
+(1234567890, 'Debit', 4, 1234),(0987654321, 'Credit', 5, 5678),('qwertyuiop', 'Credit/Debit', 6, 9012);
+
+#korttityyppien lisääminen
+INSERT INTO account_type (id_account_type, id_account, id_card, card_type) VALUES
+('D4', 4, 1234567890, 'Debit'),
+('C5', 5, 0987654321, 'Credit'),
+('DC6', 6, 'qwertyuiop', 'Debit/Credit');
+
+
+#tilin rahamäärän lisääminen
+UPDATE account Set balance = balance + 100 WHERE id_account = 4
+
+#rahan nostaminen
+UPDATE account Set balance = CASE
+WHEN balance - 100 >= 0 THEN balance - 100 ELSE balance END WHERE id_client = 1 
+
+#tilin luottorajan muuttaminen
+UPDATE account set credit_limit = 200 WHERE id_account = 5;
+
+#luoton nostaminen tililtä
+UPDATE account SET credit_limit = CASE
+WHEN credit_limit - 100 >= 0 THEN credit_limit - 100 ELSE credit_limit END
+WHERE id_account = 5;
+
+#Proseduuri rahan nostolle
+DELIMITER //
+CREATE PROCEDURE withdrawBalance (IN accountid INT, IN withdrawn DECIMAL(10,2))
+BEGIN
+    DECLARE current_balance DECIMAL(10,2);
+    SELECT balance INTO current_balance FROM account WHERE id_account = accountid;
+    IF withdrawn <= current_balance THEN
+        UPDATE account 
+        SET balance = balance - withdrawn 
+        WHERE id_account = accountid;
+        INSERT INTO transaction (transaction_date, transaction_type, amount, id_account) 
+        VALUES (NOW(), 'Withdrawal', withdrawn, accountid);
+    ELSE
+        SELECT 'Withdrawal amount exceeds available balance';
+    END IF;
+    
+END //
+DELIMITER ;
+
+#Rahan noston proseduurin kutsu (id_account, amount)
+CALL withdrawBalance(4,10000.00);
