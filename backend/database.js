@@ -11,6 +11,8 @@ const mysql = require('mysql2');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const connection="mysql://netuser:netpass@127.0.0.1:3306/bank_automat"
+const conn="mysql://netuser:netpass@127.0.0.1:3306/bank_automat";
+
+const connection=mysql.createPool(conn);
 
 module.exports = connection;
