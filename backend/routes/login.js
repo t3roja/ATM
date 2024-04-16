@@ -20,7 +20,10 @@ router.post('/',function(request,response){
                     if(compareResult){
 
                         console.log("Login successful");
+
+
                         const token=generateAccessToken({idCard: request.body.idCard})
+
                         response.send(token);
                     }
                     else{

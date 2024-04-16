@@ -17,6 +17,9 @@ const transactions = {
     showTransactions(updateData,callback){
         return db.query('SELECT * from transaction WHERE id_account=?',[updateData.id],callback)
     },
+    showBalance(updateData,callback){
+        return db.query('SELECT balance from account WHERE id_account=?',[updateData.id],callback)
+    },
 
 }
 
