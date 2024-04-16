@@ -2,9 +2,12 @@
 #define TRANSACTIONS_H
 
 #include <QDialog>
+#include <QtNetwork>
+#include <QNetworkAccessManager>
+#include <QJsonDocument>
 
 namespace Ui {
-class transactions;
+class menu;
 }
 
 class transactions : public QDialog
@@ -15,13 +18,24 @@ public:
     explicit transactions(QWidget *parent = nullptr);
     ~transactions();
 
-private:
-    Ui::transactions *ui;
+    void setWebToken(const QByteArray &newWebToken);
 
 private slots:
-    void handleTransactionsReturn();
-signals:
-    void sendTransactionsReturnSignalToLoggedIn();
+
+    void showTransactionsButtonClicked();
+    void transactionsSlot(QNetworkReply *reply);
+
+
+private:
+    Ui::menu *ui;
+    QString username;
+
+
+    QNetworkAccessManager *transactionManager;
+    QNetworkReply *reply;
+    QByteArray response_data;
+    QByteArray token;
+
 };
 
 #endif // TRANSACTIONS_H

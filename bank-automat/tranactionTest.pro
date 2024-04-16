@@ -1,7 +1,5 @@
 QT       += core gui
-QT += network
-QT += sql
-
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,42 +11,30 @@ CONFIG += c++17
 
 SOURCES += \
     balance.cpp \
-    cardreader.cpp \
-
-    image.cpp \
-    loggedin.cpp \
+    depositbalance.cpp \
+    enviroment.cpp \
     main.cpp \
+    mainmenu.cpp \
     mainwindow.cpp \
-    network.cpp \
-
-    otheramount.cpp \
-    pinreader.cpp \
-    takemoney.cpp \
-    transactions.cpp
+    transactions.cpp \
+    withdrawbalance.cpp
 
 HEADERS += \
     balance.h \
-    cardreader.h \
-
-    image.h \
-    loggedin.h \
+    depositbalance.h \
+    enviroment.h \
+    mainmenu.h \
     mainwindow.h \
-    network.h \
-
-    otheramount.h \
-    pinreader.h \
-    takemoney.h \
-    transactions.h
+    transactions.h \
+    withdrawbalance.h
 
 FORMS += \
     balance.ui \
-    cardreader.ui \
-    loggedin.ui \
+    depositbalance.ui \
+    mainmenu.ui \
     mainwindow.ui \
-    otheramount.ui \
-    pinreader.ui \
-    takemoney.ui \
-    transactions.ui
+    transactions.ui \
+    withdrawbalance.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

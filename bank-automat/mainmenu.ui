@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainMenu</class>
+ <widget class="QDialog" name="mainMenu">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>279</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="buttonWithdraw">
+   <property name="geometry">
+    <rect>
+     <x>119</x>
+     <y>70</y>
+     <width>101</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Nosta</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="mainMenuWelcomeText">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>20</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Tervetuloa</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buttonDeposit">
+   <property name="geometry">
+    <rect>
+     <x>119</x>
+     <y>100</y>
+     <width>101</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Talleta</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buttonBalance">
+   <property name="geometry">
+    <rect>
+     <x>119</x>
+     <y>130</y>
+     <width>101</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Saldo</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="buttonTransactions">
+   <property name="geometry">
+    <rect>
+     <x>119</x>
+     <y>160</y>
+     <width>101</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Tilitapahtumat</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

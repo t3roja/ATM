@@ -1,19 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QDebug>
-
-#include <QMessageBox>
-
-
+#include "qmessagebox.h"
+#include "enviroment.h"
+#include "mainmenu.h"
+//0500CB87D2
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    connect(ui->btnInsertCard,SIGNAL(clicked(bool)),
-            this, SLOT(handleInsertCardClick()));
-
+    connect(ui->pushButtonLogin,SIGNAL(clicked(bool)),this,SLOT(pushButtonLoginHandler())); // Kytketään nappi slottiin
 }
 
 MainWindow::~MainWindow()
@@ -22,140 +18,48 @@ MainWindow::~MainWindow()
 }
 
 
-
-
-
-/*
-
-login automaattiin
-QString uname=ui->textUsername->text();
-QString pincd=ui->textPincode->text();
-QJsonObject jsonObj;
-jsonObj.insert("username",uname);
-jsonObj.insert("pincode","pincd");
-
-QString site_url=network::getBaseUrl()+"/login";
-QNetworkRequest request((site_url));
-request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-
-loginManager = new QNetworkAccessManager(this);
-connectloginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginFunktio(QNetworkReply*)));
-
-reply = loginManager->put(request, QJsonDocument(jsonObj).toJson());
-
-
-
-
-
-//WEBTOKEN ALKU
-    QByteArray myToken="Bearer "+webToken;
-    request.setRawHeader(QByteArray("Authorization"),(myToken));
-//WEBTOKEN LOPPU
-
-
-
-
-
-
-*/
-
-void MainWindow::handleInsertCardClick()
+void MainWindow::pushButtonLoginHandler()
 {
-    qDebug()<<"InsertCard";
+    QString username=ui->lineEditUname->text();
+    QString password=ui->lineEditPass->text();
+    QJsonObject jsonObj;
+    jsonObj.insert("idCard", username);
+    jsonObj.insert("pin", password);
 
-    cardReaderPtr = new cardReader(this);
-    connect(cardReaderPtr,SIGNAL(sendCardNumToMain(short)),
-               this,SLOT(handleCardNumberRead(short)));
-    cardReaderPtr->show();
-    //cardReaderPtr->open();
+    QString site_url= enviroment::getBaseUrl() + "/login";
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
+    loginManager = new QNetworkAccessManager(this);
+    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
+
+    reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
 }
 
-void MainWindow::handleCardNumberRead(short n)
-{
-
-    qDebug()<<"MainWindow CardNumberRead";
-
-    qDebug()<<"kortin numero on ="<<n;
-    cardNumber = n;
-    ui->lineEditCurrentCardNumber->setText(QString::number(n));
-    delete cardReaderPtr;
-
-    //tähän rfid kortin luku
-    //rfid luku otetaan talteen ja siirretään handlePinNumberRead funktioon käyttäjänimeksi
-
-    //kortin numro on valittu aukeaa mahdollisuus syöttää pin koodi
-    pinReaderPtr = new pinReader();
-    connect(pinReaderPtr,SIGNAL(sendPinNumberToMain(short)),
-            this,SLOT(handlePinNumberRead(short)));
-    pinReaderPtr->show();
-
-}
-
-void MainWindow::handlePinNumberRead(short p)
-{
-
-    //short p tilalle QNetworkReply *reply kun vaihdetaan nettitarkistus
-
-    //attempsLeft pitää muuttaa if lauseeksi joka resetoituu aina kun onnistunut kirjautuminen
-    //ja kerää tiedon itselle talteen jos epäonnistuu
-
-    //Tänne pitäisi päästä kun painaa read pin nappia
-    qDebug()<<"MainWindow handlePinNumberRead funktiossa";
-    qDebug()<<"pin numero on ="<<p;
-    pinNumber = p;
-    ui->lineEditCurrentPinNumber->setText(QString::number(p));
-
-    if (pinNumber==correctPinNumber && cardNumber==correctCardNumber){
-        qDebug()<<"salasana ja kortin numero oikein => sisäänkirjautuminen onnistui";
-
-        attemptsLeft=3;
-
-        loggedInPtr = new loggedIn();
-        connect(loggedInPtr,SIGNAL(sendLogOutSignalToMain()),
-                this,SLOT(handleLoggedOutClick()));
-        loggedInPtr->show();
-    } else {
-
-        attemptsLeft--;
-        qDebug()<<"salasana tai kortin numero väärin => sisäänkirjautuminen epäonnistui";
-        //avaa pinReaderPtr jotta pin koodin voi syöttää uudelleen
-        //jos yrityksiä ei ole jäljellä=>lukitse tili
-
-    }
-    delete pinReaderPtr;
-    ui->lineEditPinAttemptsLeft->setText(QString::number(attemptsLeft));
-}
-
-void MainWindow::handleLoggedOutClick()
-{
-
-/*
-void MainWindow::loginNetwork(QNetworkReply *reply)
+void MainWindow::loginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-    QMessageBox msgbox;
-    if(response_data=="error1"){
-        msgbox.setText("ei internet yhteyttä");
-            msgbox.exec();
+    QMessageBox msgBox;
+
+    if(response_data=="-4078"){
+        msgBox.setText("Database error");
+        msgBox.exec();
     }
     else{
-            if(response_data !="false"){
-                msgbox.setText("toimii");
-                    msgbox.exec();
-            }
-            else{
-                    msgbox.setText("tunnus/pin ei täsmää");
-                        msgbox.exec();
-                    ui->textPin->clear();
-            }
+        if(response_data!="false"){
+            QString uname=ui->lineEditUname->text();
+            mainMenu *objectMenu = new mainMenu;
+            objectMenu->setUsername(uname);
+            objectMenu->setWebToken(response_data);
+            objectMenu->show();
+
+        }
+        else{
+            msgBox.setText("Wrong username or password");
+            msgBox.exec();
+        }
     }
+
 }
 
-*/
-
-    qDebug()<<"--Uloskirjautuminen suoritettu--";
-    delete loggedInPtr;
-}
 
