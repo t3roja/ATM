@@ -1,6 +1,6 @@
 #include "enviroment.h"
 #include "transactions.h"
-#include "ui_menu.h"
+#include "ui_transactions.h"
 
 transactions::transactions(QWidget *parent) :
     QDialog(parent),

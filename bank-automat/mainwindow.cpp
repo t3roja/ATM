@@ -10,6 +10,30 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     connect(ui->pushButtonLogin,SIGNAL(clicked(bool)),this,SLOT(pushButtonLoginHandler())); // Kytketään nappi slottiin
+    connect(ui->btn0,SIGNAL(clicked(bool)),
+            this, SLOT(handle0Click()));
+    connect(ui->btn1,SIGNAL(clicked(bool)),
+            this, SLOT(handle1Click()));
+    connect(ui->btn2,SIGNAL(clicked(bool)),
+            this, SLOT(handle2Click()));
+    connect(ui->btn3,SIGNAL(clicked(bool)),
+            this, SLOT(handle3Click()));
+    connect(ui->btn4,SIGNAL(clicked(bool)),
+            this, SLOT(handle4Click()));
+    connect(ui->btn5,SIGNAL(clicked(bool)),
+            this, SLOT(handle5Click()));
+    connect(ui->btn6,SIGNAL(clicked(bool)),
+            this, SLOT(handle6Click()));
+    connect(ui->btn7,SIGNAL(clicked(bool)),
+            this, SLOT(handle7Click()));
+    connect(ui->btn8,SIGNAL(clicked(bool)),
+            this, SLOT(handle8Click()));
+    connect(ui->btn9,SIGNAL(clicked(bool)),
+            this, SLOT(handle9Click()));
+    connect(ui->btnReturn,SIGNAL(clicked(bool)),
+            this, SLOT(handleReturnClick()));
+    connect(ui->btnErase,SIGNAL(clicked(bool)),
+            this, SLOT(handleEraseClick()));
 }
 
 MainWindow::~MainWindow()
@@ -60,6 +84,101 @@ void MainWindow::loginSlot(QNetworkReply *reply)
         }
     }
 
+}
+
+
+void MainWindow::handle1Click()
+{
+
+    qDebug()<<"1";
+    ui->lineEditPass->insert("1");
+}
+
+void MainWindow::handle2Click()
+{
+
+    qDebug()<<"2";
+
+    ui->lineEditPass->insert("2");
+}
+
+void MainWindow::handle3Click()
+{
+
+    qDebug()<<"3";
+
+    ui->lineEditPass->insert("3");
+}
+
+void MainWindow::handle4Click()
+{
+
+    qDebug()<<"4";
+
+    ui->lineEditPass->insert("4");
+}
+
+void MainWindow::handle5Click()
+{
+    qDebug()<<"5";
+
+    ui->lineEditPass->insert("5");
+}
+
+void MainWindow::handle6Click()
+{
+
+    qDebug()<<"6";
+
+    ui->lineEditPass->insert("6");
+}
+
+void MainWindow::handle7Click()
+{
+
+    qDebug()<<"7";
+
+    ui->lineEditPass->insert("7");
+}
+
+void MainWindow::handle8Click()
+{
+
+    qDebug()<<"8";
+
+    ui->lineEditPass->insert("8");
+}
+
+void MainWindow::handle9Click()
+{
+
+    qDebug()<<"9";
+
+    ui->lineEditPass->insert("9");
+}
+
+void MainWindow::handle0Click()
+{
+
+    qDebug()<<"0";
+
+    ui->lineEditPass->insert("0");
+
+}
+
+
+void MainWindow::handleEraseClick()
+{
+
+    qDebug()<<"Erase";
+
+
+    if (!ui->lineEditPass->text().isEmpty())
+    {
+        QString text =ui->lineEditPass->text();
+        text.chop(1);
+        ui->lineEditPass->setText(text);
+    }
 }
 
 
