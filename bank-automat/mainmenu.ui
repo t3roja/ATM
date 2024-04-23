@@ -83,6 +83,19 @@
     <string>Tilitapahtumat</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="btnLogout">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>190</y>
+     <width>101</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Kirjaudu ulos</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

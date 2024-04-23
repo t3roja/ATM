@@ -7,11 +7,17 @@ Balance::Balance(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->showBalanceButton,SIGNAL(clicked(bool)),this,SLOT(showBalanceButtonClicked())); // Kytketään nappi slottiin
+    connect(ui->btnReturn,SIGNAL(clicked(bool)),this,SLOT(handleReturnClick()));
 }
 
 Balance::~Balance()
 {
     delete ui;
+}
+
+void Balance::setUsername(const QString &newUsername)
+{
+    username=newUsername;
 }
 
 void Balance::setWebToken(const QByteArray &newToken)
@@ -22,8 +28,7 @@ void Balance::setWebToken(const QByteArray &newToken)
 void Balance::showBalanceButtonClicked()
 {
     QJsonObject jsonObj;
-    qDebug()<<"WEBTOKEN: " << token;
-    jsonObj.insert("id", "4"); // tähän pitää saada haluttu tili
+    jsonObj.insert("id",username);
     QString url = enviroment::getBaseUrl() + "/transactions/showBalance/";
     QNetworkRequest request((url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -45,7 +50,22 @@ void Balance::balanceSlot(QNetworkReply *reply)
     QJsonDocument jsonDoc = QJsonDocument::fromJson(response_data); //siistitään vastausta
     QJsonObject jsonObject = jsonDoc.object();
     QString balance = jsonObject["balance"].toString();
-    ui->balanceText->setText(balance);
+    QString creditLimit = jsonObject["credit_limit"].toString();
+    if(balance!=""){
+        QString x = "Saldo : ";
+        x += balance;
+        ui->balanceText->setText(x+"\r");
+    }
+    if(creditLimit!=""){
+        QString x = "Luottoraja : ";
+        x+=creditLimit;
+        ui->balanceText->append(x+"\r");
+    }
+}
+
+void Balance::handleReturnClick()
+{
+    delete this;
 }
 
 

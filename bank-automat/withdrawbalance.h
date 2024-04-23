@@ -22,6 +22,7 @@ public:
     QByteArray token;
 
     void setWebToken(const QByteArray &newWebToken);
+    void setUsername(const QString &newUsername);
 
 private slots:
 
@@ -39,12 +40,14 @@ private slots:
     void handle9Click();
     void handle0Click();
     void handleEraseClick();
+    void handleReturnClick();
 
 private:
     Ui::withdrawBalance *ui;
     QNetworkAccessManager *withdrawBalanceManager;
     QNetworkReply *reply;
     QByteArray response_data;
+    QString username;
 };
 
 #endif // WITHDRAWBALANCE_H

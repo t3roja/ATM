@@ -7,6 +7,7 @@ depositBalance::depositBalance(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->buttonDeposit,SIGNAL(clicked(bool)),this,SLOT(depositBalanceButtonClicked())); // Kytketään nappi slottiin
+    connect(ui->btnReturn,SIGNAL(clicked(bool)),this,SLOT(handleReturnClick()));
 }
 
 
@@ -20,12 +21,16 @@ void depositBalance::setWebToken(const QByteArray &newToken)
     token = newToken;
 }
 
+void depositBalance::setUsername(const QString &newUsername)
+{
+    username=newUsername;
+}
+
 void depositBalance::depositBalanceButtonClicked()
 {
     QJsonObject jsonObj;
     QString amount=ui->depositAmountText->text();
-    qDebug()<<"WEBTOKEN: " << token;
-    jsonObj.insert("id", "4"); // tähän pitää saada haluttu tili
+    jsonObj.insert("id", username);
     jsonObj.insert("amount",amount);
     QString url = enviroment::getBaseUrl() + "/transactions/depositBalance/";
     QNetworkRequest request((url));
@@ -45,4 +50,14 @@ void depositBalance::depositBalanceButtonClicked()
 void depositBalance::depositBalanceSlot(QNetworkReply *reply)
 {
     qDebug()<<"deposit balance slot";
+}
+
+void depositBalance::handleReturnClick()
+{
+    delete this;
+}
+
+QString depositBalance::getUsername() const
+{
+    return username;
 }

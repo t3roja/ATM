@@ -8,17 +8,24 @@ transactions::transactions(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->showTransactionsButton,SIGNAL(clicked(bool)),this,SLOT(showTransactionsButtonClicked())); // Kytketään nappi slottiin
+    connect(ui->btnReturn,SIGNAL(clicked(bool)),this,SLOT(handleReturnClick()));
 }
 transactions::~transactions()
 {
     delete ui;
 }
 
+void transactions::setUsername(const QString &newUsername)
+{
+    username=newUsername;
+}
+
 void transactions::showTransactionsButtonClicked()
 {
+    qDebug()<< "account:"<< username;
     QJsonObject jsonObj;
     qDebug()<<"WEBTOKEN: " << token;
-    jsonObj.insert("id", "4");  // tähän pitää saada haluttu tili
+    jsonObj.insert("id", username );  // tähän pitää saada haluttu tili
     QString url = enviroment::getBaseUrl() + "/transactions/showTransactions/";
     QNetworkRequest request((url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -46,12 +53,17 @@ void transactions::transactionsSlot(QNetworkReply *reply)
         QJsonObject jsonObj = value.toObject();
         transactions+=QString::number(jsonObj["id_transaction"].toInt())+"  |  ";
         transactions+=QString::number(jsonObj["id_account"].toInt())+"  |  ";
-        transactions+=QString::number(jsonObj["amount"].toInt())+"  |  ";
+        transactions+=jsonObj["amount"].toString()+"  |  ";
         transactions+=jsonObj["transaction_type"].toString()+"  |  ";
         transactions+=jsonObj["transaction_date"].toString()+"  |  ";
         transactions+="\r";
     }
     ui->textBrowser->setText(transactions);
+}
+
+void transactions::handleReturnClick()
+{
+    delete this;
 }
 
 void transactions::setWebToken(const QByteArray &newToken)

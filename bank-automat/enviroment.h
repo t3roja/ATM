@@ -10,6 +10,14 @@ public:
     enviroment();
 
     static QString getBaseUrl();
+    QString getAccountNumber();
+    QString getAccountId();
+    void setAccountNumber(QString un);
+
+    QString accountId;
+    QString accountNumber;
 };
+
+
 
 #endif // ENVIROMENT_H

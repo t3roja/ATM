@@ -15,6 +15,7 @@ mainMenu::mainMenu(QWidget *parent) :
     connect(ui->buttonTransactions,SIGNAL(clicked(bool)),this,SLOT(transactionsSlot()));
     connect(ui->buttonDeposit,SIGNAL(clicked(bool)),this,SLOT(depositButtonSlot()));
     connect(ui->buttonWithdraw,SIGNAL(clicked(bool)),this,SLOT(withdrawButtonSlot()));
+    connect(ui->btnLogout,SIGNAL(clicked(bool)), this,SLOT(handleLogoutClick()));
 }
 
 mainMenu::~mainMenu()
@@ -26,6 +27,7 @@ void mainMenu::transactionsSlot()
 {
     transactions *objectTransactions = new transactions;
     objectTransactions->setWebToken(webToken);
+    objectTransactions->setUsername(username);
     objectTransactions->show();
 }
 
@@ -33,6 +35,7 @@ void mainMenu::balanceButtonSlot()
 {
     Balance *objectBalance = new Balance;
     objectBalance->setWebToken(webToken);
+    objectBalance->setUsername(username);
     objectBalance->show();
 }
 
@@ -40,6 +43,7 @@ void mainMenu::depositButtonSlot()
 {
     depositBalance *objectDeposit = new depositBalance;
     objectDeposit->setWebToken(webToken);
+    objectDeposit->setUsername(username);
     objectDeposit->show();
 }
 
@@ -47,7 +51,15 @@ void mainMenu::withdrawButtonSlot()
 {
     withdrawBalance *objectWithdraw = new withdrawBalance;
     objectWithdraw->setWebToken(webToken);
+    objectWithdraw->setUsername(username);
     objectWithdraw->show();
+}
+
+void mainMenu::handleLogoutClick()
+{
+    QByteArray x=0;
+    setWebToken(x);
+    delete this;
 }
 
 void mainMenu::setWebToken(const QByteArray &newWebToken)

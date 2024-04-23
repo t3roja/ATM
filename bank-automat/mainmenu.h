@@ -28,6 +28,8 @@ private slots:
     void balanceButtonSlot();
     void depositButtonSlot();
     void withdrawButtonSlot();
+    void handleLogoutClick();
+
 
 private:
     Ui::mainMenu *ui;

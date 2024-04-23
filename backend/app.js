@@ -7,7 +7,7 @@ var logger = require('morgan');
 // npm install --save multer <--tämän teet komentokehotteessa omalla koneella
 
 
-var indexRouter = require('./routes/index');
+const indexRouter = require('./routes/idGetter');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var transactionsRouter = require('./routes/transactions');
@@ -34,12 +34,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Suojaamattomat reitit
 app.use('/login',loginRouter)
-app.use('/index', indexRouter);
+
 
 //Suojatut reitit
-app.use(authenticateToken);
+//app.use(authenticateToken);
 app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter);
+app.use('/idGetter', indexRouter);
 
 
 

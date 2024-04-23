@@ -31,6 +31,8 @@ withdrawBalance::withdrawBalance(QWidget *parent) :
             this, SLOT(handleReturnClick()));
     connect(ui->btnErase,SIGNAL(clicked(bool)),
             this, SLOT(handleEraseClick()));
+    connect(ui->btnReturn,SIGNAL(clicked(bool)),
+            this,SLOT(handleReturnClick()));
 }
 
 
@@ -44,12 +46,19 @@ void withdrawBalance::setWebToken(const QByteArray &newToken)
     token = newToken;
 }
 
+void withdrawBalance::setUsername(const QString &newUsername)
+{
+    username = newUsername;
+}
+
 void withdrawBalance::withdrawBalanceButtonClicked()
 {
+    if(ui->radioButtonDebit->isChecked()){
+
     QJsonObject jsonObj;
     QString amount=ui->withdrawAmountText->text();
     qDebug()<<"WEBTOKEN: " << token;
-    jsonObj.insert("id", "4"); // tähän pitää saada haluttu tili
+    jsonObj.insert("id", username); // tähän pitää saada haluttu tili
     jsonObj.insert("amount",amount);
     QString url = enviroment::getBaseUrl() + "/transactions/withdrawBalance/";
     QNetworkRequest request((url));
@@ -64,6 +73,28 @@ void withdrawBalance::withdrawBalanceButtonClicked()
 
 
     reply = withdrawBalanceManager->post(request, QJsonDocument(jsonObj).toJson());
+    }
+    if(ui->radioButtonCredit->isChecked()){
+
+    QJsonObject jsonObj;
+    QString amount=ui->withdrawAmountText->text();
+    qDebug()<<"WEBTOKEN: " << token;
+    jsonObj.insert("id", username); // tähän pitää saada haluttu tili
+    jsonObj.insert("amount",amount);
+    QString url = enviroment::getBaseUrl() + "/transactions/withdrawCredit/";
+    QNetworkRequest request((url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    //WEB-TOKEN ALKU
+    QByteArray myToken="Bearer "+ token;
+    request.setRawHeader(QByteArray("Authorization"),(myToken));
+    //WEB-TOkEN LOPPU
+    withdrawBalanceManager = new QNetworkAccessManager(this);
+
+    connect(withdrawBalanceManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(withdrawBalanceSlot(QNetworkReply*)));
+
+
+    reply = withdrawBalanceManager->post(request, QJsonDocument(jsonObj).toJson());
+    }
 }
 
 void withdrawBalance::withdrawBalanceSlot(QNetworkReply *reply)
@@ -164,4 +195,10 @@ void withdrawBalance::handleEraseClick()
         text.chop(1);
         ui->withdrawAmountText->setText(text);
     }
+}
+
+void withdrawBalance::handleReturnClick()
+{
+    delete this;
+    qDebug()<<"Return";
 }

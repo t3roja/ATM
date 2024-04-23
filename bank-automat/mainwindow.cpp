@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    webToken=0;
     ui->setupUi(this);
     connect(ui->pushButtonLogin,SIGNAL(clicked(bool)),this,SLOT(pushButtonLoginHandler())); // Kytketään nappi slottiin
     connect(ui->btn0,SIGNAL(clicked(bool)),
@@ -30,8 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
             this, SLOT(handle8Click()));
     connect(ui->btn9,SIGNAL(clicked(bool)),
             this, SLOT(handle9Click()));
-    connect(ui->btnReturn,SIGNAL(clicked(bool)),
-            this, SLOT(handleReturnClick()));
     connect(ui->btnErase,SIGNAL(clicked(bool)),
             this, SLOT(handleEraseClick()));
 }
@@ -42,12 +41,15 @@ MainWindow::~MainWindow()
 }
 
 
+
+
 void MainWindow::pushButtonLoginHandler()
 {
-    QString username=ui->lineEditUname->text();
+    QString accountNum = ui->lineEditUname->text();
+    enviroment::setAccountNumber(accountNum);
     QString password=ui->lineEditPass->text();
     QJsonObject jsonObj;
-    jsonObj.insert("idCard", username);
+    jsonObj.insert("idCard", enviroment::getAccountNumber());
     jsonObj.insert("pin", password);
 
     QString site_url= enviroment::getBaseUrl() + "/login";
@@ -69,21 +71,34 @@ void MainWindow::loginSlot(QNetworkReply *reply)
         msgBox.setText("Database error");
         msgBox.exec();
     }
+    else if(response_data=="Login failed"){
+        msgBox.setText("Väärä pin");
+        msgBox.exec();
+    }
     else{
         if(response_data!="false"){
             QString uname=ui->lineEditUname->text();
             mainMenu *objectMenu = new mainMenu;
+            getCardType(uname);
             objectMenu->setUsername(uname);
             objectMenu->setWebToken(response_data);
             objectMenu->show();
-
         }
         else{
             msgBox.setText("Wrong username or password");
             msgBox.exec();
         }
     }
+}
 
+void MainWindow::getIdSlot(QNetworkReply *reply)
+{
+    //tässä id_account id_cardista
+    accountType=reply->readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(accountType);
+    QJsonObject jsonObj = jsonDoc.object();
+    QString AT = QString::number(jsonObj["id_account"].toInt());
+    enviroment::accountId=AT;
 }
 
 
@@ -179,6 +194,21 @@ void MainWindow::handleEraseClick()
         text.chop(1);
         ui->lineEditPass->setText(text);
     }
+}
+
+void MainWindow::getCardType(QString CT)
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("idCard", CT);
+
+    QString site_url= enviroment::getBaseUrl() + "/idGetter/getID";
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    loginManager = new QNetworkAccessManager(this);
+    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(getIdSlot(QNetworkReply*)));
+
+    reply = loginManager->get(request);
 }
 
 

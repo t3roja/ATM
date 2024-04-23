@@ -22,11 +22,14 @@ public:
     QByteArray token;
 
     void setWebToken(const QByteArray &newToken);
+    void setUsername(const QString &newUsername);
+    QString getUsername() const;
 
 private slots:
 
     void depositBalanceButtonClicked();
     void depositBalanceSlot(QNetworkReply *reply);
+    void handleReturnClick();
 
 private:
     Ui::depositBalance *ui;
@@ -34,6 +37,7 @@ private:
     QNetworkAccessManager *depositBalanceManager;
     QNetworkReply *reply;
     QByteArray response_data;
+    QString username;
 };
 
 #endif // DEPOSITBALANCE_H
