@@ -34,10 +34,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Suojaamattomat reitit
 app.use('/login',loginRouter)
+app.use('/idGetter', indexRouter);
 
 
 //Suojatut reitit
-//app.use(authenticateToken);
+app.use(authenticateToken);
 app.use('/users', usersRouter);
 app.use('/transactions', transactionsRouter);
 app.use('/idGetter', indexRouter);
