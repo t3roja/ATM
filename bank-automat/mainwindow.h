@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "enviroment.h"
+#include "rfidd.h"
 #include <QMainWindow>
 #include <QtNetwork>
 #include <QNetworkAccessManager>
@@ -38,6 +39,9 @@ private slots:
     void handle0Click();
     void handleEraseClick();
 
+    void handleCardRead(QByteArray);
+    void handleCardNumber(QByteArray);
+
 private:
     Ui::MainWindow *ui;
     QString username;
@@ -45,7 +49,12 @@ private:
     QNetworkAccessManager *loginManager;
     QNetworkReply *reply;
     QByteArray response_data;
+    void login(QString);
     QByteArray accountType;
+    QString cardType;
     void getCardType(QString);
+
+
+    RFIDD * ptr_dll;
 };
 #endif // MAINWINDOW_H

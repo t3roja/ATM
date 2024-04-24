@@ -25,7 +25,7 @@ void transactions::showTransactionsButtonClicked()
     qDebug()<< "account:"<< username;
     QJsonObject jsonObj;
     qDebug()<<"WEBTOKEN: " << token;
-    jsonObj.insert("id", username );  // tähän pitää saada haluttu tili
+    jsonObj.insert("id", username );
     QString url = enviroment::getBaseUrl() + "/transactions/showTransactions/";
     QNetworkRequest request((url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -51,8 +51,8 @@ void transactions::transactionsSlot(QNetworkReply *reply)
     QString transactions =  "Transaction ID  |  Account ID  |  Amount  |  Transaction type  |  Date  \r";
     foreach (const QJsonValue &value, jsonArray){// järjestetään tulosta
         QJsonObject jsonObj = value.toObject();
-        transactions+=QString::number(jsonObj["id_transaction"].toInt())+"  |  ";
-        transactions+=QString::number(jsonObj["id_account"].toInt())+"  |  ";
+        transactions+=QString::number(jsonObj["id_transaction"].toInt())+"\t|  ";
+        transactions+=QString::number(jsonObj["id_account"].toInt())+"\t|  ";
         transactions+=jsonObj["amount"].toString()+"  |  ";
         transactions+=jsonObj["transaction_type"].toString()+"  |  ";
         transactions+=jsonObj["transaction_date"].toString()+"  |  ";

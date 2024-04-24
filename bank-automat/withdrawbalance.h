@@ -12,7 +12,7 @@ namespace Ui {
 class withdrawBalance;
 }
 
-class withdrawBalance : public QDialog
+class withdrawBalance : public QDialog, public enviroment
 {
     Q_OBJECT
 
@@ -22,7 +22,7 @@ public:
     QByteArray token;
 
     void setWebToken(const QByteArray &newWebToken);
-    void setUsername(const QString &newUsername);
+    void setUsername(const QString &newUsername, const QString &newCardType);
 
 private slots:
 
@@ -48,6 +48,7 @@ private:
     QNetworkReply *reply;
     QByteArray response_data;
     QString username;
+    QString cardType;
 };
 
 #endif // WITHDRAWBALANCE_H

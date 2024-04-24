@@ -27,6 +27,7 @@ void Balance::setWebToken(const QByteArray &newToken)
 
 void Balance::showBalanceButtonClicked()
 {
+    qDebug()<<enviroment::cardType;
     QJsonObject jsonObj;
     jsonObj.insert("id",username);
     QString url = enviroment::getBaseUrl() + "/transactions/showBalance/";

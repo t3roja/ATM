@@ -6,6 +6,7 @@ withdrawBalance::withdrawBalance(QWidget *parent) :
     ui(new Ui::withdrawBalance)
 {
     ui->setupUi(this);
+
     connect(ui->buttonWithdraw,SIGNAL(clicked(bool)),this,SLOT(withdrawBalanceButtonClicked())); // Kytketään nappi slottiin
     connect(ui->btn0,SIGNAL(clicked(bool)),
             this, SLOT(handle0Click()));
@@ -33,6 +34,8 @@ withdrawBalance::withdrawBalance(QWidget *parent) :
             this, SLOT(handleEraseClick()));
     connect(ui->btnReturn,SIGNAL(clicked(bool)),
             this,SLOT(handleReturnClick()));
+
+    qDebug()<< enviroment::getCardType() << "withdraw type";
 }
 
 
@@ -46,14 +49,20 @@ void withdrawBalance::setWebToken(const QByteArray &newToken)
     token = newToken;
 }
 
-void withdrawBalance::setUsername(const QString &newUsername)
+void withdrawBalance::setUsername(const QString &newUsername, const QString &newCardType)
 {
     username = newUsername;
+    cardType = newCardType;
+    qDebug()<<cardType<<"cartyoe";
 }
 
 void withdrawBalance::withdrawBalanceButtonClicked()
 {
-    if(ui->radioButtonDebit->isChecked()){
+    if (cardType == "Debit"){
+        ui->radioButtonCredit->setEnabled(false);
+        qDebug()<<"täälä";
+    }
+    if((ui->radioButtonDebit->isChecked() && cardType=="Debit")||(ui->radioButtonDebit->isChecked() && cardType=="Debit/Credit")){
 
     QJsonObject jsonObj;
     QString amount=ui->withdrawAmountText->text();
@@ -74,7 +83,7 @@ void withdrawBalance::withdrawBalanceButtonClicked()
 
     reply = withdrawBalanceManager->post(request, QJsonDocument(jsonObj).toJson());
     }
-    if(ui->radioButtonCredit->isChecked()){
+    if((ui->radioButtonCredit->isChecked() && cardType=="Credit")||(ui->radioButtonCredit->isChecked() && cardType=="Debit/Credit")){
 
     QJsonObject jsonObj;
     QString amount=ui->withdrawAmountText->text();
@@ -202,3 +211,5 @@ void withdrawBalance::handleReturnClick()
     delete this;
     qDebug()<<"Return";
 }
+
+

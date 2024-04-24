@@ -8,8 +8,14 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    ptr_dll = new RFIDD(this);
+    ptr_dll->openSerialPort();
     webToken=0;
     ui->setupUi(this);
+    connect(ptr_dll,SIGNAL(cardRead(QByteArray)),this,SLOT(handleCardNumber(QByteArray)));
+
+
+
     connect(ui->pushButtonLogin,SIGNAL(clicked(bool)),this,SLOT(pushButtonLoginHandler())); // Kytketään nappi slottiin
     connect(ui->btn0,SIGNAL(clicked(bool)),
             this, SLOT(handle0Click()));
@@ -45,21 +51,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::pushButtonLoginHandler()
 {
-    QString accountNum = ui->lineEditUname->text();
-    enviroment::setAccountNumber(accountNum);
-    QString password=ui->lineEditPass->text();
-    QJsonObject jsonObj;
-    jsonObj.insert("idCard", enviroment::getAccountNumber());
-    jsonObj.insert("pin", password);
-
-    QString site_url= enviroment::getBaseUrl() + "/login";
-    QNetworkRequest request((site_url));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    loginManager = new QNetworkAccessManager(this);
-    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
-
-    reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
+    QString accountNum = username;
+    login(accountNum);
+    getCardType(accountNum);
 }
 
 void MainWindow::loginSlot(QNetworkReply *reply)
@@ -78,9 +72,11 @@ void MainWindow::loginSlot(QNetworkReply *reply)
     else{
         if(response_data!="false"){
             QString uname=ui->lineEditUname->text();
-            mainMenu *objectMenu = new mainMenu;
             getCardType(uname);
+            mainMenu *objectMenu = new mainMenu;
+            qDebug()<<enviroment::cardType<<"sadsad";
             objectMenu->setUsername(uname);
+            objectMenu->setCardType(enviroment::cardType);
             objectMenu->setWebToken(response_data);
             objectMenu->show();
         }
@@ -90,6 +86,37 @@ void MainWindow::loginSlot(QNetworkReply *reply)
         }
     }
 }
+void MainWindow::login(QString num)
+{
+    QString accountNum = num;
+    enviroment::setAccountNumber(accountNum);
+    QString password=ui->lineEditPass->text();
+    QJsonObject jsonObj;
+    jsonObj.insert("idCard", enviroment::getAccountNumber());
+    jsonObj.insert("pin", password);
+    QString site_url= enviroment::getBaseUrl() + "/login";
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    loginManager = new QNetworkAccessManager(this);
+    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
+
+    reply = loginManager->post(request, QJsonDocument(jsonObj).toJson());
+}
+
+void MainWindow::getCardType(QString CT)
+{
+    QJsonObject jsonObj;
+    jsonObj.insert("idCard", CT);
+    QString site_url= enviroment::getBaseUrl() + "/idGetter/getCardType/" + CT;
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    loginManager = new QNetworkAccessManager(this);
+    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(getIdSlot(QNetworkReply*)));
+
+    reply = loginManager->get(request);
+}
+
 
 void MainWindow::getIdSlot(QNetworkReply *reply)
 {
@@ -97,8 +124,8 @@ void MainWindow::getIdSlot(QNetworkReply *reply)
     accountType=reply->readAll();
     QJsonDocument jsonDoc = QJsonDocument::fromJson(accountType);
     QJsonObject jsonObj = jsonDoc.object();
-    QString AT = QString::number(jsonObj["id_account"].toInt());
-    enviroment::accountId=AT;
+    enviroment::cardType = (jsonObj["card_type"].toString());
+    qDebug()<<"id slot cardType : " << enviroment::getCardType();
 }
 
 
@@ -196,19 +223,19 @@ void MainWindow::handleEraseClick()
     }
 }
 
-void MainWindow::getCardType(QString CT)
+void MainWindow::handleCardRead(QByteArray cr)
 {
-    QJsonObject jsonObj;
-    jsonObj.insert("idCard", CT);
+    qDebug()<< "handleCardRead funktio" << cr;
 
-    QString site_url= enviroment::getBaseUrl() + "/idGetter/getID";
-    QNetworkRequest request((site_url));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    loginManager = new QNetworkAccessManager(this);
-    connect(loginManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(getIdSlot(QNetworkReply*)));
-
-    reply = loginManager->get(request);
 }
+
+void MainWindow::handleCardNumber(QByteArray cn)
+{
+    qDebug()<< "handleCardNumber funktio" << cn;
+    username = cn;
+    ui->lineEditUname->setText(username);
+}
+
+
 
 

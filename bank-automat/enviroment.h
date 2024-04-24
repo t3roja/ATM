@@ -13,9 +13,13 @@ public:
     QString getAccountNumber();
     QString getAccountId();
     void setAccountNumber(QString un);
-
+    void setCardType(QString);
     QString accountId;
     QString accountNumber;
+    QString cardType;
+
+
+    QString getCardType() const;
 };
 
 

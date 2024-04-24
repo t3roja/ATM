@@ -33,6 +33,9 @@
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEditUname">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -47,7 +50,7 @@
      </font>
     </property>
     <property name="text">
-     <string>0500CB87D2</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -198,7 +201,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>1234</string>
+     <string/>
     </property>
    </widget>
   </widget>

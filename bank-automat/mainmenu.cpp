@@ -10,7 +10,6 @@ mainMenu::mainMenu(QWidget *parent) :
     ui(new Ui::mainMenu)
 {
     ui->setupUi(this);
-
     connect(ui->buttonBalance,SIGNAL(clicked(bool)),this,SLOT(balanceButtonSlot())); // Kytketään nappi slottiin
     connect(ui->buttonTransactions,SIGNAL(clicked(bool)),this,SLOT(transactionsSlot()));
     connect(ui->buttonDeposit,SIGNAL(clicked(bool)),this,SLOT(depositButtonSlot()));
@@ -51,7 +50,7 @@ void mainMenu::withdrawButtonSlot()
 {
     withdrawBalance *objectWithdraw = new withdrawBalance;
     objectWithdraw->setWebToken(webToken);
-    objectWithdraw->setUsername(username);
+    objectWithdraw->setUsername(username, enviroment::cardType);
     objectWithdraw->show();
 }
 
@@ -67,6 +66,7 @@ void mainMenu::setWebToken(const QByteArray &newWebToken)
     webToken = newWebToken;
     qDebug()<<"WebToken set to: " + webToken;
 }
+
 
 void mainMenu::setUsername(const QString &newUsername)
 {

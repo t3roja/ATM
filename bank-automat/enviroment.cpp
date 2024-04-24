@@ -26,3 +26,13 @@ void enviroment::setAccountNumber(QString un)
     accountNumber = un;
 }
 
+void enviroment::setCardType(QString cT)
+{
+    cardType = cT;
+}
+
+QString enviroment::getCardType() const
+{
+    return cardType;
+}
+

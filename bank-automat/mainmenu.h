@@ -11,7 +11,7 @@ namespace Ui {
 class mainMenu;
 }
 
-class mainMenu : public QDialog
+class mainMenu : public QDialog, public enviroment
 {
     Q_OBJECT
 
@@ -20,6 +20,7 @@ public:
     ~mainMenu();
     void setUsername(const QString &newUsername);
     void setWebToken(const QByteArray &newWebToken);
+
 
 
 private slots:
@@ -31,9 +32,11 @@ private slots:
     void handleLogoutClick();
 
 
+
 private:
     Ui::mainMenu *ui;
     QString username;
+    QString cardType;
     QByteArray webToken;
     QNetworkAccessManager *menuManager;
     QNetworkReply *reply;

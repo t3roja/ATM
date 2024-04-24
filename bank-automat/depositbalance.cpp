@@ -24,6 +24,7 @@ void depositBalance::setWebToken(const QByteArray &newToken)
 void depositBalance::setUsername(const QString &newUsername)
 {
     username=newUsername;
+
 }
 
 void depositBalance::depositBalanceButtonClicked()
