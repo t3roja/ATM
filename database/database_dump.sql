@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `bank_automat` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `bank_automat`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: bank_automat
 -- ------------------------------------------------------
@@ -42,7 +42,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (4,1,'Debit',1200.00,NULL),(5,2,'credit',NULL,1700.00),(6,3,'Debit/credit',3300.00,5300.00);
+INSERT INTO `account` VALUES (4,1,'Debit',700.00,NULL),(5,2,'credit',NULL,1700.00),(6,3,'Debit/credit',3300.00,5300.00);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,7 +72,7 @@ CREATE TABLE `account_type` (
 
 LOCK TABLES `account_type` WRITE;
 /*!40000 ALTER TABLE `account_type` DISABLE KEYS */;
-INSERT INTO `account_type` VALUES ('C5',5,'987654321','Credit'),('D4',4,'0500CB87D2','Debit'),('DC6',6,'qwertyuiop','Debit/Credit');
+INSERT INTO `account_type` VALUES ('C5',5,'0600064972','Credit'),('D4',4,'0500CB87D2','Debit'),('DC6',6,'0B0032AD79','Debit/Credit');
 /*!40000 ALTER TABLE `account_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -98,7 +98,7 @@ CREATE TABLE `card` (
 
 LOCK TABLES `card` WRITE;
 /*!40000 ALTER TABLE `card` DISABLE KEYS */;
-INSERT INTO `card` VALUES ('0500CB87D2','Debit',4,'$2a$10$DFb7X9jVHnSWEiLHxzik2OlAvTauwKOsJMnl257VMvWtjMFlzNF2K'),('987654321','Credit',5,'$2a$10$Zu3atqSxI6T4xiG4WObLZOO8SqZ.imas9hq.ejN9v8opc0WyjtjHy'),('qwertyuiop','Credit/Debit',6,'$2a$10$yOJfMWZFvHi1ZFY/eJU5nuqY5YBii53aN0oyQlAUKqCgfsTHy/jhG');
+INSERT INTO `card` VALUES ('0500CB87D2','Debit',4,'$2a$10$Ze9.wIvKYreo4fBFeovaqebmKFqzj.6yWyLYMrTQqhOEhXP9LStDy'),('0600064972','Credit',5,'$2a$10$SifVQdqhSvfQOHoDAH3.veDGr1N0ds7kfKQVPaH640OnrtlqnvbfW'),('0B0032AD79','Credit/Debit',6,'$2a$10$nrgsIO68RDHygbDfvVQfauJTttfJNObV1cxPev9udUt2NehxTyawO');
 /*!40000 ALTER TABLE `card` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,7 +143,7 @@ CREATE TABLE `transaction` (
   PRIMARY KEY (`id_transaction`),
   KEY `transaction_account` (`id_account`),
   CONSTRAINT `transaction_account` FOREIGN KEY (`id_account`) REFERENCES `account` (`id_account`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +152,7 @@ CREATE TABLE `transaction` (
 
 LOCK TABLES `transaction` WRITE;
 /*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
-INSERT INTO `transaction` VALUES (1,4,100.00,'Withdrawal','2024-03-21 16:32:36'),(2,4,100.00,'Withdrawal','2024-03-21 16:32:45'),(3,4,100.00,'Withdrawal','2024-03-27 16:12:44'),(4,4,100.00,'Withdrawal','2024-03-27 16:13:03'),(5,4,200.00,'Withdrawal','2024-03-27 16:32:22'),(6,4,200.00,'Withdrawal','2024-03-27 16:32:32'),(7,4,200.00,'Withdrawal','2024-03-27 16:56:14'),(8,4,200.00,'Withdrawal','2024-03-28 09:21:51'),(9,5,100.00,'Credit withdrawal','2024-03-28 09:58:11'),(10,5,100.00,'Credit withdrawal','2024-03-28 09:59:05'),(11,5,100.00,'Credit withdrawal','2024-03-28 10:03:51'),(12,6,100.00,'Credit withdrawal','2024-03-28 10:04:05'),(13,5,100.00,'Credit withdrawal','2024-03-28 10:14:35'),(14,6,100.00,'Credit withdrawal','2024-03-28 10:14:44'),(15,4,200.00,'Deposit','2024-03-28 15:03:46'),(16,6,200.00,'Deposit','2024-03-28 15:04:01'),(17,4,100.00,'Deposit','2024-03-28 15:06:33'),(18,6,500.00,'Credit withdrawal','2024-03-28 15:07:55'),(19,4,200.00,'Withdrawal','2024-04-02 10:38:05'),(20,5,100.00,'Credit withdrawal','2024-04-10 10:07:11'),(21,4,200.00,'Withdrawal','2024-04-10 10:08:14'),(22,4,200.00,'Withdrawal','2024-04-10 10:08:18'),(23,4,100.00,'Deposit','2024-04-10 10:22:36'),(24,4,100.00,'Deposit','2024-04-10 10:22:51');
+INSERT INTO `transaction` VALUES (1,4,100.00,'Withdrawal','2024-03-21 16:32:36'),(2,4,100.00,'Withdrawal','2024-03-21 16:32:45'),(3,4,100.00,'Withdrawal','2024-03-27 16:12:44'),(4,4,100.00,'Withdrawal','2024-03-27 16:13:03'),(5,4,200.00,'Withdrawal','2024-03-27 16:32:22'),(6,4,200.00,'Withdrawal','2024-03-27 16:32:32'),(7,4,200.00,'Withdrawal','2024-03-27 16:56:14'),(8,4,200.00,'Withdrawal','2024-03-28 09:21:51'),(9,5,100.00,'Credit withdrawal','2024-03-28 09:58:11'),(10,5,100.00,'Credit withdrawal','2024-03-28 09:59:05'),(11,5,100.00,'Credit withdrawal','2024-03-28 10:03:51'),(12,6,100.00,'Credit withdrawal','2024-03-28 10:04:05'),(13,5,100.00,'Credit withdrawal','2024-03-28 10:14:35'),(14,6,100.00,'Credit withdrawal','2024-03-28 10:14:44'),(15,4,200.00,'Deposit','2024-03-28 15:03:46'),(16,6,200.00,'Deposit','2024-03-28 15:04:01'),(17,4,100.00,'Deposit','2024-03-28 15:06:33'),(18,6,500.00,'Credit withdrawal','2024-03-28 15:07:55'),(19,5,100.00,'Credit withdrawal','2024-04-09 15:41:29'),(20,4,200.00,'Withdrawal','2024-04-09 15:42:15'),(21,4,100.00,'Deposit','2024-04-09 15:42:21'),(22,4,200.00,'Withdrawal','2024-04-10 12:04:47'),(23,4,200.00,'Withdrawal','2024-04-10 12:35:59'),(24,4,200.00,'Withdrawal','2024-04-10 12:36:18'),(25,4,100.00,'Withdrawal','2024-04-16 22:23:08'),(26,4,100.00,'Withdrawal','2024-04-16 22:26:00'),(27,4,100.00,'Withdrawal','2024-04-16 22:28:10'),(28,4,100.00,'Withdrawal','2024-04-16 22:29:04'),(29,4,100.00,'Withdrawal','2024-04-16 22:30:47'),(30,4,0.00,'Withdrawal','2024-04-16 22:31:29'),(31,4,200.00,'Deposit','2024-04-16 22:50:30'),(32,4,100.00,'Withdrawal','2024-04-16 22:51:21'),(33,4,200.00,'Deposit','2024-04-16 22:51:34');
 /*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,4 +263,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-15 14:28:55
+-- Dump completed on 2024-04-24 18:59:01
