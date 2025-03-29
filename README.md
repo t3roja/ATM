@@ -12,7 +12,7 @@ Technologies Used
 
     Frontend: HTML, CSS, JavaScript
     Backend: Node.js, Express.js (hosted on Render.com)
-    Database: MongoDB for storing user accounts and transaction data
+    Database: MySQl for storing user accounts and transaction data
 
 Setup Instructions
 
