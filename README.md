@@ -10,7 +10,7 @@ Features
 
 Technologies Used
 
-    Frontend: HTML, CSS, JavaScript
+    Frontend: C++, Qt
     Backend: Node.js, Express.js (hosted on Render.com)
     Database: MySQl for storing user accounts and transaction data
 
